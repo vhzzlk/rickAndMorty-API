@@ -1,67 +1,119 @@
-# Rick & Morty MVP App
+# 🌌 Rick & Morty MVP App
 
-Este projeto é um Produto Mínimo Viável (MVP) desenvolvido com React Native e Expo que consome a API REST pública do Rick and Morty [https://rickandmortyapi.com/](https://rickandmortyapi.com/).
+![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Expo](https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+![React Navigation](https://img.shields.io/badge/React_Navigation-8C84FF?style=for-the-badge&logo=react&logoColor=white)
 
-## 1. Planejamento e Requisitos
+Um Produto Mínimo Viável (MVP) robusto desenvolvido com **React Native** e **Expo**, projetado para consumir e interagir com os dados da [The Rick and Morty REST API](https://rickandmortyapi.com/).
 
-### Requisitos Funcionais (RF)
-1. **Listagem de dados:** O aplicativo carrega e exibe inicialmente uma lista com os personagens de Rick and Morty através da rota `/character`.
-2. **Visualização de Detalhes:** Ao interagir (clicar) num personagem, o usuário é direcionado à tela de detalhes, onde visualiza informações completas, como espécie, origem, última localização conhecida e estado de vida (vivo/morto).
-3. **Indicador de Carregamento:** Exibe feedback visual para o usuário (`ActivityIndicator`) enquanto a camada de serviço finaliza o carregamento da API.
-4. **Alerta/View de Falhas (Fallback):** Tratamento da interface em caso de falhas na consumação da requisição, apresentando na tela uma mensagem clara de erro.
-
-### Requisitos Não Funcionais (RNF)
-1. **Tratamento de Erros de Conexão:** A lógica de fetch possui bloco `try/catch` sendo refletida num Alert/Text UI state apropriado.
-2. **Carregamento Assíncrono:** Os dados são consumidos via requisições HTTP (Axios) usando `async/await` com loaders nativos.
-3. **SafeArea Management:** Tratamento para exibição na área visível da tela `SafeAreaView` e controle de StatusBar por cima das dependências do `react-native-safe-area-context`.
-4. **Arquitetura modular:** O código é quebrado em pequenos blocos seguindo princípios básicos de Clean Architecture (Separation of concerns).
-
-### Prototipagem & Style Guide
-- **Background Principal:** `#24282F` (Fundo escuro remetente ao seriado)
-- **Primary Color:** `#97CE4C` (Verde "tóxico" do logo/portais)
-- **Secondary Color:** `#00B5CC` (Ciano)
-- **Texto Primário:** `#FFFFFF` (Branco para alto contraste)
-- **Texto Secundário:** `#9E9E9E` (Cinza claro para descrições de status)
-- **Background Card:** `#3C3E44` (Para as view list items)
-- **Tipografia:** 24px Títulos, 18px Subtítulos, 14px Body
-- **Componentes Base:** Header para o Title, Cards renderizados dinamicamente da FlatList e TouchableOpacity sem backgrounds complexos com pequenas sombreadas (elevation).
+Este projeto foi construído focando em boas práticas de mercado, arquitetura escalável, gerenciamento de estado eficiente e uma UI/UX responsiva e polida.
 
 ---
 
-## 2. Configuração e Estrutura de Pastas
-
-Como boas práticas de separação de responsabilidades (Clean Architecture simplificada), o app utiliza a seguinte estrutura dentro do diretório `/src`:
-
-* `src/assets/`: Destinada para imagens globais, ícones vetoriais e arquivos fixos do projeto.
-* `src/components/`: Armazena componentes visuais reutilizáveis em mais de uma tela e "Dumb components".
-  * Exemplo: `Header.js`, `Card.js`.
-* `src/routes/`: Concentra e instâncializa toda a configuração de pilha/Stack de Navegação (`@react-navigation`).
-* `src/screens/`: As "páginas" completas da aplicação ("Smart Components"). Cada arquivo reflete uma view com sua própria lógica de apresentação.
-  * Exemplo: `HomeScreen.js`, `DetailsScreen.js`.
-* `src/services/`: Configuração de comunicação com camadas externas e APIs através do `axios`.
-  * Exemplo: `api.js`.
-* `src/styles/`: Constantes com variáveis css globais, como cores, hex e tipografias de um layout.
-  * Exemplo: `theme.js`.
-
-**Por que essa divisão?** Centralizar regras específicas (estilo num lugar, chamadas HTTP em outro) facilita dar manutenção ou escalar o software sem impactar toda a página. Por ex., se precisarmos trocar do `Axios` para `Fetch`, apenas trocariamos em `/services` sem alterar nem um React Component.
+## 📋 Sumário
+1. [Sobre o Projeto](#-sobre-o-projeto)
+2. [Requisitos Técnicos](#-requisitos-técnicos)
+3. [Arquitetura e Padrões](#-arquitetura-e-padrões)
+4. [Design System (Style Guide)](#-design-system-style-guide)
+5. [Stacks e Ferramentas](#-stacks-e-ferramentas)
+6. [Instalação e Execução](#-instalação-e-execução)
 
 ---
 
-## 3. Desenvolvimento Técnico
+## 🚀 Sobre o Projeto
 
-* **Consumo de API:** Arquitetado puramente sobre Axios `GET`.
-* **Estados e Ciclos de Vida:** Funções combinadas entre `useState` e chamadas instanciadas dentro de um `useEffect([])` para popular as telas na renderização inicial.
-* **Componente de UX/UI:** Adotado `FlatList` ao invés de ScrolLViews estáticas para otimização e gerência eficiente do consumo de memória do React Native em listas grandes.
-* **Navegação:** Native Stack navegando de Home -> Detalhes do Personagem.
+O aplicativo tem como objetivo prover uma interface interativa para explorar o universo de Rick and Morty. Através dele, os usuários podem listar e pesquisar personagens do seriado, e aprofundar-se em especificações geográficas e vitais através de telas dinâmicas de detalhamento.
+
+### 📌 Requisitos Funcionais (RF)
+- **[RF01]** Listagem inicial e contínua de personagens (`HomeScreen`).
+- **[RF02]** Sistema de Busca/Filtro em tempo real por nome do personagem.
+- **[RF03]** Visualização de perfil detalhado (`DetailsScreen`), apresentando métricas como status vital, espécie, gênero, localização e origem.
+- **[RF04]** Feedback de interações assíncronas (Shimmers/Loading states) durante resoluções de Promise.
+- **[RF05]** Tratamentos de Fallback e Empty States amigáveis ao usuário para buscas sem resultados ou erros de rede HTTP.
+
+### 🛠 Requisitos Não Funcionais (RNF)
+- **[RNF01]** Componentização reativa suportando re-renderizações eficientes através de `FlatList`.
+- **[RNF02]** Design Responsivo alinhado para compatibilidade Cross-platform (iOS, Android e Web).
+- **[RNF03]** Gerenciamento inteligente da área de interface `SafeAreaView`, respeitando barras de navegação virtuais e notches (câmeras fontais).
+- **[RNF04]** Stack HTTP baseada em `Axios` interceptando e tratando Status Codes.
 
 ---
 
-## Como Rodar o Projeto
+## 🏗 Arquitetura e Padrões
 
-1. Clone esse repositório pelo terminal: `git clone [link-do-repositorio]`
-2. Instale todas as dependências com `npm install`
-3. Execute o servidor de desenvolvimento: `npx expo start`
-4. Pelo app "Expo Go", abra no seu dispositivo ou selecione um Emulador (pressione "a" para Android no terminal expo).
+Foi estabelecida uma estrutura orientada a modularidade baseada no conceito abstrato da **Clean Architecture**, privilegiando a manutenibilidade, separação de responsabilidades (SoC - Separation of Concerns) e o desacoplamento de abstrações visuais (UI) da lógica de negócios e I/O (API).
+
+```text
+src/
+ ┣ 📂 assets/      # Mídias locais estáticas (Imagens, SVGs, Fontes customs)
+ ┣ 📂 components/  # Componentes encapsulados 'Dumb/Presentational' (Header.js, Card.js)
+ ┣ 📂 routes/      # Mapeamento do Core de rotas do @react-navigation
+ ┣ 📂 screens/     # Entry points da árvore visual, 'Container/Smart' Components
+ ┣ 📂 services/    # Camada unificada de I/O, instâncias de chamadas HTTP (api.js)
+ ┗ 📂 styles/      # Tokens de design globais, Cores padronizadas, Constantes CSS (theme.js)
+```
+
+**Justificativa de Modelagem:** Enclausurar regras assíncronas no diretório de `services` e centralizar Tokens de Design isolam a complexidade de mudança global. A adoção de `components/` versus `screens/` ajuda as equipes a discernirem onde blocos renderizáveis simples e blocos regrados por regras de negócio habitam.
 
 ---
-*MVP Construído como entrega final de estudos e avaliação técnica.*
+
+## 🎨 Design System (Style Guide)
+
+O Theme System configurado evoca a identidade e a paleta canônica do seriado:
+
+| Papel Visual | Referência (Hex) | Amostra |
+| :--- | :--- | :--- |
+| **Background Root** | `#24282F` | ⬛ Dark Charcoal |
+| **Surface Cards** | `#3C3E44` | 🌫️ Ash Grey |
+| **Primary Accent** | `#97CE4C` | 🧪 Toxic Green |
+| **Secondary Accent** | `#00B5CC` | 🌀 Portal Cyan |
+| **Texto Primário** | `#FFFFFF` | ⚪ White |
+| **Texto Secundário** | `#9E9E9E` | 🔘 Ghost Grey |
+| **Danger State** | `#FF6B6B` | 🔴 Error Red |
+
+**Tipografia Global (Scalable Constraints):** 
+- *Titles:* 24px (fontWeight: bold)
+- *Subtitles:* 18px
+- *Body / Labels:* 14px
+
+---
+
+## 💻 Stacks e Ferramentas
+
+O ecossistema é mantido pelo empacotador metro através das seguintes soluções:
+- [React Native](https://reactnative.dev/)
+- [Expo (Managed Workflow)](https://expo.dev/)
+- [Axios](https://axios-http.com/)
+- [React Navigation (Native Stack)](https://reactnavigation.org/)
+- [React Native Safe Area Context](https://github.com/th3rdwave/react-native-safe-area-context)
+
+---
+
+## ⚙️ Instalação e Execução
+
+### Pré-requisitos
+* Node.js (Recomendado v18 LTS ou superior)
+* Expo CLI (`npm install -g expo-cli`)
+* Emulador Local (Android Studio ou Xcode) **ou** o Aplicativo Físico do *Expo Go* no Smartphone.
+
+### Passos de Configuração
+
+1. Clone as dependências do código fonte do MVP:
+   ```bash
+   git clone [sua-url-do-repositorio-aqui]
+   cd RickAndMorty-API
+   ```
+
+2. Instale o pacote de dependências `node_modules`:
+   ```bash
+   npm install
+   ```
+
+3. Gire o empacotador metropolitano do Expo:
+   ```bash
+   npx expo start
+   ```
+
+4. **Inicializando o aplicativo:** O terminal irá gerar um QRCode. Você pode interagir com os comandos (Ex: Press `a` para rodar num simulador Android) ou escanear o código na tela com o seu app físico do Expo.
+
