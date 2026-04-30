@@ -71,7 +71,7 @@ export default function HomeScreen({ navigation }) {
         )}
         contentContainerStyle={styles.list}
         ListEmptyComponent={
-          !loading && <Text style={styles.emptyText}>Nenhum personagem encontrado.</Text>
+          !loading ? <Text style={styles.emptyText}>Nenhum personagem encontrado.</Text> : null
         }
       />
     );
