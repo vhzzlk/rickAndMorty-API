@@ -7,34 +7,36 @@ export default function DetailsScreen({ route }) {
 
   return (
     <ScrollView style={styles.container}>
-      <Image source={{ uri: character.image }} style={styles.image} />
-      
-      <View style={styles.infoContainer}>
-        <Text style={styles.name}>{character.name}</Text>
+      <View style={styles.contentContainer}>
+        <Image source={{ uri: character.image }} style={styles.image} />
         
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Status:</Text>
-          <Text style={styles.value}>{character.status}</Text>
-        </View>
+        <View style={styles.infoContainer}>
+          <Text style={styles.name}>{character.name}</Text>
+          
+          <View style={styles.detailRow}>
+            <Text style={styles.label}>Status:</Text>
+            <Text style={styles.value}>{character.status}</Text>
+          </View>
 
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Espécie:</Text>
-          <Text style={styles.value}>{character.species}</Text>
-        </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.label}>Espécie:</Text>
+            <Text style={styles.value}>{character.species}</Text>
+          </View>
 
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Gênero:</Text>
-          <Text style={styles.value}>{character.gender}</Text>
-        </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.label}>Gênero:</Text>
+            <Text style={styles.value}>{character.gender}</Text>
+          </View>
 
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Origem:</Text>
-          <Text style={styles.value}>{character.origin.name}</Text>
-        </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.label}>Origem:</Text>
+            <Text style={styles.value}>{character.origin.name}</Text>
+          </View>
 
-        <View style={styles.detailRow}>
-          <Text style={styles.label}>Localização Atual:</Text>
-          <Text style={styles.value}>{character.location.name}</Text>
+          <View style={styles.detailRow}>
+            <Text style={styles.label}>Localização Atual:</Text>
+            <Text style={styles.value}>{character.location.name}</Text>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -46,10 +48,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
+  contentContainer: {
+    alignSelf: 'center',
+    width: '100%',
+    maxWidth: 600,
+  },
   image: {
     width: '100%',
     height: 300,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
+    marginTop: 20,
   },
   infoContainer: {
     padding: 20,
